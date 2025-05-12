@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.MemberController"
+            prefHeight="300.0" prefWidth="400.0">
+<BorderPane xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <Label text="Members List" style="-fx-font-size: 20px; -fx-padding: 10;" />
+    </top>
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <ListView fx:id="memberListView" prefHeight="300.0" prefWidth="400.0" />
+        </VBox>
+    </center>
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Button text="Edit" onAction="#onEditMember" />
+            <Button text="Delete" onAction="#onDeleteMember" />
+        </HBox>
+    </bottom>
+</BorderPane>
+</AnchorPane>

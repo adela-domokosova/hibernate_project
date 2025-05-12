@@ -14,6 +14,6 @@
 
     <VBox spacing="10" alignment="CENTER">
         <Label text="Home Screen"/>
-        <Button text="Go to User List" onAction="#switchToUserList"/>
+        <Button text="Go to User List" onAction="#switchToMemberList"/>
     </VBox>
 </AnchorPane>

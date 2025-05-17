@@ -6,6 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
+//nová DAO třída pro každou entitu
+//zde se bude předávat EM z controlleru v každé metodě
+//budou tu transakce
+
+
 //member service by mělo komunikovat s DAO specifické tabulky
 //state management - loadin atd pro ui
 public class MemberService {

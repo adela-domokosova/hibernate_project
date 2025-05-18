@@ -1,6 +1,7 @@
 package org.example.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Member {
@@ -19,23 +20,25 @@ public class Member {
     private String email;
 
     @Column(name="REGISTRATION_DATE")
-    private String registrationDate;
+    private LocalDateTime registrationDate;
 
     public Member() {
     }
 
-    public Member(Long id, String firstName, String lastName, String email, String registrationDate) {
+    public Member(Long id, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.registrationDate = registrationDate;
     }
-    public Member(String firstName, String lastName, String email){
+    public Member(String firstName, String lastName, String email, LocalDateTime registrationDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.registrationDate = registrationDate;
     }
+
 
     public Long getId() {
         return id;
@@ -66,11 +69,11 @@ public class Member {
         this.email = email;
     }
 
-    public String getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 

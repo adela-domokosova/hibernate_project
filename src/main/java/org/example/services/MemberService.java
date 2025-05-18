@@ -1,10 +1,12 @@
 package org.example.services;
 
+import org.example.dao.MemberDao;
 import org.example.entity.Member;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 //nová DAO třída pro každou entitu
 //zde se bude předávat EM z controlleru v každé metodě
@@ -15,24 +17,20 @@ import java.util.List;
 //state management - loadin atd pro ui
 public class MemberService {
 
-    private EntityManagerFactory emf;
+    private MemberDao memberDao;
     //zde volat dao metody a taky transakce
     // Konstruktor pro vytvoření EntityManagerFactory
-    public MemberService() {
-        this.emf = Persistence.createEntityManagerFactory("punit");
+    public MemberService(MemberDao memberDao) {
+        this.memberDao = memberDao;
     }
 
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
 
     // Uložení člena
-    public void saveMember(String firstName, String lastName, String email) {
-        EntityManager em = getEntityManager();
+    public void saveMember(EntityManager em, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         try {
             em.getTransaction().begin();
-            Member member = new Member(firstName, lastName, email);
-            member.setFirstName(firstName);
+            Member member = new Member(firstName, lastName, email, registrationDate);
+            //member.setFirstName(firstName);
             member.setLastName(lastName);
             member.setEmail(email);
             em.persist(member);
@@ -46,8 +44,7 @@ public class MemberService {
     }
 
     // Aktualizace člena
-    public void updateMember(Long id, String firstName, String lastName, String email) {
-        EntityManager em = getEntityManager();
+    public void updateMember(EntityManager em, Long id, String firstName, String lastName, String email) {
         try {
             em.getTransaction().begin();
             Member member = em.find(Member.class, id);
@@ -67,8 +64,7 @@ public class MemberService {
     }
 
     // Mazání člena
-    public void deleteMember(Long id) {
-        EntityManager em = getEntityManager();
+    public void deleteMember(EntityManager em, Long id) {
         try {
             em.getTransaction().begin();
             Member member = em.find(Member.class, id);
@@ -85,8 +81,7 @@ public class MemberService {
     }
 
     // Načtení všech členů
-    public List<Member> getAllMembers() {
-        EntityManager em = getEntityManager();
+    public List<Member> getAllMembers(EntityManager em) {
         List<Member> members = null;
         try {
             em.getTransaction().begin();

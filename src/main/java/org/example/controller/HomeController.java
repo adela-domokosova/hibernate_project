@@ -6,9 +6,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+
 //otestovat odpojení DB a to ui
 //entity manaera sem do každé metody??? podle prednasky. typické pro spring aplikace
 //je do dobre i při spadnutí aplikace
@@ -18,6 +22,7 @@ import java.io.IOException;
 
 //task<list<user>> new task ->override ->bindbout jeoh metody na ui update message a updateprogress
 public class HomeController {
+    private static  final Logger LOG = LoggerFactory.getLogger(HomeController.class);
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -36,9 +41,10 @@ public class HomeController {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }cach{
+        }catch (Exception e){
             //errorbox
-        }final {
+        }finally {
+            LOG.info("done");
             //is null -> vytvořit noveho
         }
 

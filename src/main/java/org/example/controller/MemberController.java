@@ -4,11 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javax.persistence.Persistence;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
 import org.example.Main;
 import org.example.dao.MemberDao;
 import org.example.entity.Member;
@@ -31,6 +36,9 @@ public class MemberController {
     private ListView<Member> memberListView;
     private ObservableList<Member> memberList;
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     public MemberController(){
         this.memberService = new MemberService(new MemberDao());
     }
@@ -85,6 +93,15 @@ public class MemberController {
         EntityManager em = Main.createEM();
         Member selectedMember = memberListView.getSelectionModel().getSelectedItem();
         if (selectedMember != null) {
+            Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
+
+            // Kontrola, zda záznam stále existuje
+            if (existingMember.isEmpty()) {
+                showAlert("Member Not Found", "The selected member has been deleted by another user.");
+                loadMembers();
+                return;
+            }
+
             String newFirstName = promptForInput("Edit Member", "Enter new first name:", selectedMember.getFirstName());
             String newLastName = promptForInput("Edit Member", "Enter new last name:", selectedMember.getLastName());
             String newEmail = promptForInput("Edit Member", "Enter new email:", selectedMember.getEmail());
@@ -128,5 +145,25 @@ public class MemberController {
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void onBackButton(ActionEvent event) {
+        EntityManager em = null;
+        //try blok s entity manaerem
+
+        try{
+            em = Main.createEM();
+            Parent root = FXMLLoader.load(getClass().getResource("/home.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch (Exception e){
+            //errorbox
+        }finally {
+            LOG.info("done");
+            //is null -> vytvořit noveho
+        }
+
     }
 }

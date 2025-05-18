@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 //nová DAO třída pro každou entitu
 //zde se bude předávat EM z controlleru v každé metodě
 //budou tu transakce
@@ -94,5 +95,20 @@ public class MemberService {
             em.close();
         }
         return members;
+    }
+
+    public Optional<Member> getMemberById(EntityManager em, Long id) {
+        Optional<Member> member = null;
+        try {
+            em.getTransaction().begin();
+            member = memberDao.get(id);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return member;
     }
 }

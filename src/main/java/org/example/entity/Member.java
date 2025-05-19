@@ -2,12 +2,16 @@ package org.example.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "member")
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @Column(name = "FIRST_NAME")
@@ -21,6 +25,9 @@ public class Member {
 
     @Column(name="REGISTRATION_DATE")
     private LocalDateTime registrationDate;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Payment> payments;
 
     public Member() {
     }

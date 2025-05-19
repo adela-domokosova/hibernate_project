@@ -46,17 +46,18 @@ public class MemberService {
     public void updateMember(EntityManager em, Long id, String firstName, String lastName, String email) {
         try {
             em.getTransaction().begin();
-            Optional<Member> member = memberDao.get(id);
-            //Member member = em.find(Member.class, id);
-            if (member.isPresent()) {
+            Optional<Member> optionalMember = memberDao.get(id);
+            if (optionalMember.isPresent()) {
+                Member member = optionalMember.get();
                 member.setFirstName(firstName);
                 member.setLastName(lastName);
                 member.setEmail(email);
-                em.merge(member);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
             e.printStackTrace();
         }
     }

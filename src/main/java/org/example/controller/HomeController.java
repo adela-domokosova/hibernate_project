@@ -52,6 +52,51 @@ public class HomeController {
 
     }
 
+    public void switchToSubscriptionList(ActionEvent event) throws IOException {
+
+        EntityManager em = null;
+        //try blok s entity manaerem
+
+        try{
+            em = Main.createEM();
+            Parent root = FXMLLoader.load(getClass().getResource("/subscriptionlist.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch (Exception e){
+            //errorbox
+        }finally {
+            LOG.info("done");
+            assert em != null;
+            em.close();
+            //is null -> vytvořit noveho
+        }
+
+    }
+    public void switchToPaymentList(ActionEvent event) throws IOException {
+
+        EntityManager em = null;
+        //try blok s entity manaerem
+
+        try{
+            em = Main.createEM();
+            Parent root = FXMLLoader.load(getClass().getResource("/paymentlist.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch (Exception e){
+            //errorbox
+        }finally {
+            LOG.info("done");
+            assert em != null;
+            em.close();
+            //is null -> vytvořit noveho
+        }
+
+    }
+
     public void handleButtonClick(ActionEvent actionEvent) {
         System.out.println("hello");
     }

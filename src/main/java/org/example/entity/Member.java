@@ -32,6 +32,7 @@ public class Member {
     public Member() {
     }
 
+
     public Member(Long id, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         this.id = id;
         this.firstName = firstName;
@@ -51,6 +52,16 @@ public class Member {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;}
 
     public String getFirstName() {
         return firstName;

@@ -15,5 +15,7 @@
     <VBox spacing="10" alignment="CENTER">
         <Label text="Home Screen"/>
         <Button text="Go to User List" onAction="#switchToMemberList"/>
+        <Button text="Go to Subscription List" onAction="#switchToSubscriptionList"/>
+        <Button text="Go to Payment List" onAction="#switchToPaymentList"/>
     </VBox>
 </AnchorPane>

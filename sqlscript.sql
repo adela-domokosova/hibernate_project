@@ -8,7 +8,7 @@ CREATE TABLE member (
     email VARCHAR(100) NOT NULL,
     registration_date TIMESTAMP NOT NULL
 );
-CREATE TABLE subscriptions (
+CREATE TABLE subscription (
    subscription_id BIGINT AUTO_INCREMENT PRIMARY KEY,
    subscription_type VARCHAR(255) NOT NULL,
    price DOUBLE NOT NULL
@@ -20,7 +20,7 @@ CREATE TABLE payment (
      payment_date DATE NOT NULL,
      amount DOUBLE NOT NULL,
      CONSTRAINT FK_Member FOREIGN KEY (member_id) REFERENCES member(member_id),
-     CONSTRAINT FK_Subscription FOREIGN KEY (subscription_id) REFERENCES subscriptions(subscription_id)
+     CONSTRAINT FK_Subscription FOREIGN KEY (subscription_id) REFERENCES subscription(subscription_id)
 );
 
 
@@ -38,7 +38,7 @@ INSERT INTO member (FIRST_NAME, LAST_NAME, EMAIL, REGISTRATION_DATE) VALUES
          ('John', 'Doe', 'john.doeque@example.com', CURRENT_TIMESTAMP),
          ('Jane', 'Smith', 'jane.smithova@example.com', CURRENT_TIMESTAMP);
 
-INSERT INTO subscriptions (subscription_type, price) VALUES
+INSERT INTO subscription (subscription_type, price) VALUES
          ('WEEKLY', 1.99),
          ('MONTHLY', 9.99),
          ('YEARLY', 19.99);

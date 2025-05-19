@@ -25,7 +25,7 @@ public class MemberService {
         this.memberDao = memberDao;
     }
 
-
+//NEZAVÍRAT EM VE FINALYY A VUBEC HO NEZAVÍRAT TADY, ZAVRI HO VE VRSTVĚ, KTERÁ HO VYTVOŘILA
     // Uložení člena
     public void saveMember(EntityManager em, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         try {
@@ -39,8 +39,6 @@ public class MemberService {
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 
@@ -48,8 +46,9 @@ public class MemberService {
     public void updateMember(EntityManager em, Long id, String firstName, String lastName, String email) {
         try {
             em.getTransaction().begin();
-            Member member = em.find(Member.class, id);
-            if (member != null) {
+            Optional<Member> member = memberDao.get(id);
+            //Member member = em.find(Member.class, id);
+            if (member.isPresent()) {
                 member.setFirstName(firstName);
                 member.setLastName(lastName);
                 member.setEmail(email);
@@ -59,8 +58,6 @@ public class MemberService {
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 
@@ -68,16 +65,15 @@ public class MemberService {
     public void deleteMember(EntityManager em, Long id) {
         try {
             em.getTransaction().begin();
-            Member member = em.find(Member.class, id);
-            if (member != null) {
+            Optional<Member> member = memberDao.get(id);
+            //Member member = em.find(Member.class, id);
+            if (member.isPresent()) {
                 em.remove(member);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-        } finally {
-            em.close();
         }
     }
 
@@ -86,13 +82,12 @@ public class MemberService {
         List<Member> members = null;
         try {
             em.getTransaction().begin();
-            members = em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
+            members = memberDao.getAll();
+            //members = em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-        } finally {
-            em.close();
         }
         return members;
     }
@@ -106,8 +101,6 @@ public class MemberService {
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
-        } finally {
-            em.close();
         }
         return member;
     }

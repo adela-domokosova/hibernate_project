@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javax.persistence.Persistence;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
@@ -20,10 +19,7 @@ import org.example.entity.Member;
 import org.example.services.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -113,6 +109,9 @@ public class MemberController {
         } else {
             showAlert("No Member Selected", "Please select a member to edit.");
         }
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
     }
 
     @FXML
@@ -128,6 +127,9 @@ public class MemberController {
             }
         } else {
             showAlert("No Member Selected", "Please select a member to delete.");
+        }
+        if (em != null && em.isOpen()) {
+            em.close();
         }
     }
 
@@ -162,6 +164,9 @@ public class MemberController {
             //errorbox
         }finally {
             LOG.info("done");
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
             //is null -> vytvořit noveho
         }
 

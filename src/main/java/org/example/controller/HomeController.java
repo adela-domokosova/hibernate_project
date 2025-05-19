@@ -45,6 +45,8 @@ public class HomeController {
             //errorbox
         }finally {
             LOG.info("done");
+            assert em != null;
+            em.close();
             //is null -> vytvořit noveho
         }
 

@@ -46,7 +46,7 @@ public class MemberService {
     public void updateMember(EntityManager em, Long id, String firstName, String lastName, String email) {
         try {
             em.getTransaction().begin();
-            Optional<Member> optionalMember = memberDao.get(id);
+            Optional<Member> optionalMember = memberDao.get(em, id);
             if (optionalMember.isPresent()) {
                 Member member = optionalMember.get();
                 member.setFirstName(firstName);
@@ -66,7 +66,7 @@ public class MemberService {
     public void deleteMember(EntityManager em, Long id) {
         try {
             em.getTransaction().begin();
-            Optional<Member> member = memberDao.get(id);
+            Optional<Member> member = memberDao.get(em, id);
             //Member member = em.find(Member.class, id);
             if (member.isPresent()) {
                 em.remove(member);
@@ -98,7 +98,7 @@ public class MemberService {
         Optional<Member> member = null;
         try {
             em.getTransaction().begin();
-            member = memberDao.get(id);
+            member = memberDao.get(em, id);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();

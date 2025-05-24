@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class MemberDao implements Dao<Member>{
     @Override
-    public Optional<Member> get(long id) {
+    public Optional<Member> get(EntityManager em, long id) {
         return Optional.empty();
     }
 

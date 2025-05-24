@@ -20,7 +20,7 @@
         </center>
         <bottom>
             <HBox spacing="10" style="-fx-padding: 10;">
-
+                <Button text="Edit" onAction="#createPayment" />
             </HBox>
         </bottom>
     </BorderPane>

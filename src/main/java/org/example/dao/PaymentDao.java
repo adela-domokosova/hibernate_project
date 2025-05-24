@@ -9,7 +9,7 @@ import java.util.Optional;
 //TO dependency injection??? kvuli em co bude potřebokat každá metoda
 public class PaymentDao implements Dao<Payment> {
     @Override
-    public Optional<Payment> get(long id) {
+    public Optional<Payment> get(EntityManager em, long id) {
         return Optional.empty();
     }
 

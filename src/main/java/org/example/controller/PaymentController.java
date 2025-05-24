@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import org.example.Main;
 import org.example.dao.PaymentDao;
@@ -22,7 +23,10 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
+//payments jsou view only - bude možné v subscriptionControlleru vytvořit payment pro daný sub
+//možná můžu přidat filtrování
 public class PaymentController {
     private static  final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
     private Stage stage;
@@ -59,12 +63,6 @@ public class PaymentController {
         }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 
     public void switchToHome(ActionEvent event) throws IOException {
 
@@ -87,5 +85,18 @@ public class PaymentController {
             //is null -> vytvořit noveho
         }
 
+    }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    private String promptForInput(String title, String content, String defaultValue) {
+        TextInputDialog dialog = new TextInputDialog(defaultValue);
+        dialog.setTitle(title);
+        dialog.setContentText(content);
+        Optional<String> result = dialog.showAndWait();
+        return (String) ((Optional<?>) result).orElse(null);
     }
 }

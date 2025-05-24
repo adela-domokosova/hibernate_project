@@ -27,4 +27,16 @@ public class PaymentService {
             }
             return payments;
     }
+
+    public void CreatePayment(EntityManager em, Payment payment) {
+        try {
+            em.getTransaction().begin();
+            em.persist(payment);
+            em.getTransaction().commit();
+        }catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+            return;
+        }
+    }
 }

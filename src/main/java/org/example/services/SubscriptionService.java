@@ -5,8 +5,8 @@ import org.example.entity.Member;
 import org.example.entity.Subscription;
 import org.example.entity.SubscriptionType;
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class SubscriptionService {
 
@@ -43,5 +43,21 @@ public class SubscriptionService {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
+
+    public Optional<Subscription> getSubscriptionById(EntityManager em, Long id) {
+        Optional<Subscription> subscription = null;
+        try {
+            em.getTransaction().begin();
+            subscription = subscriptionDao.get(em, id);
+            System.out.println("from dao " + subscription);
+            em.getTransaction().commit();
+
+        }catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        System.out.println(subscription);
+        return subscription;
     }
 }

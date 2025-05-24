@@ -9,8 +9,9 @@ import java.util.Optional;
 
 public class SubscriptionDao implements Dao<Subscription> {
     @Override
-    public Optional<Subscription> get(long id) {
-        return Optional.empty();
+    public Optional<Subscription> get(EntityManager em, long id) {
+        Subscription subscription = em.find(Subscription.class, id);
+        return Optional.ofNullable(subscription);
     }
 
     @Override

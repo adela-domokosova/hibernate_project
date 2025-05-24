@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T> {
-    Optional<T> get(long id);
+    Optional<T> get(EntityManager em, long id);
 
     List<T> getAll();
 

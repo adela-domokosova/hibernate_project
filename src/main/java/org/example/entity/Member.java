@@ -14,20 +14,17 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "FIRST_NAME")
+    @Column(name = "FIRST_NAME", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name= "LAST_NAME")
+    @Column(name= "LAST_NAME", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name="EMAIL")
+    @Column(name="EMAIL", nullable = false, length = 100)
     private String email;
 
-    @Column(name="REGISTRATION_DATE")
+    @Column(name="REGISTRATION_DATE", nullable = false)
     private LocalDateTime registrationDate;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Payment> payments;
 
     public Member() {
     }
@@ -55,13 +52,6 @@ public class Member {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Set<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;}
 
     public String getFirstName() {
         return firstName;

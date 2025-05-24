@@ -1,6 +1,8 @@
 package org.example.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -18,14 +20,31 @@ public class Subscription {
     @Column(nullable = false, name = "price")
     private Double price;
 
-    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Payment> payments;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id")
+    private Member member;
 
-    public Subscription() {}
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
 
-    public Subscription(SubscriptionType subscriptionType, Double price) {
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
+    @Column(name = "active", nullable = false)
+    private Boolean active = false;
+
+    public Subscription(Member member) {
+        this.member = member;
+    }
+
+    public Subscription(SubscriptionType subscriptionType, Double price, Member member) {
         this.subscriptionType = subscriptionType;
         this.price = price;
+        this.member = member;
+    }
+
+    public Subscription() {
+
     }
 
     public Long getId() {
@@ -52,12 +71,37 @@ public class Subscription {
         this.price = price;
     }
 
-    public Set<Payment> getPayments() {
-        return payments;
+
+    public Member getMember() {
+        return member;
     }
 
-    public void setPayments(Set<Payment> payments) {
-        this.payments = payments;
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
@@ -66,7 +110,10 @@ public class Subscription {
                 "id=" + id +
                 ", subscriptionType=" + subscriptionType +
                 ", price=" + price +
-                ", payments=" + payments +
+                //", member=" + member +
+                ", startDate=" + startDate +
+                ", createdDate=" + createdDate +
+                ", active=" + active +
                 '}';
     }
 }

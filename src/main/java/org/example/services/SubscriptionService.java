@@ -4,7 +4,6 @@ import org.example.dao.SubscriptionDao;
 import org.example.entity.Member;
 import org.example.entity.Subscription;
 import org.example.entity.SubscriptionType;
-
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,13 +29,14 @@ public class SubscriptionService {
         }
         return subscriptions;
     }
-
-    public void saveSubscription(EntityManager em, SubscriptionType type, Double price) {
+  //přifat membra, kterému sub patři
+    public void saveSubscription(EntityManager em, SubscriptionType type, Double price, Member member) {
         try {
             em.getTransaction().begin();
             Subscription subscription = new Subscription();
             subscription.setSubscriptionType(type);
             subscription.setPrice(price);
+            subscription.setMember(member);
             em.persist(subscription);
             em.getTransaction().commit();
         } catch (Exception e) {

@@ -11,12 +11,8 @@ public class Payment {
     @Column(name = "payment_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "subscription_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "subscription_id", referencedColumnName = "subscription_id", unique = true)
     private Subscription subscription;
 
     @Column(nullable = false, name = "payment_date")
@@ -30,9 +26,8 @@ public class Payment {
 
     }
 
-    public Payment(Long id, Member member, Subscription subscription, LocalDate paymentDate, Double amount) {
+    public Payment(Long id, Subscription subscription, LocalDate paymentDate, Double amount) {
         this.id = id;
-        this.member = member;
         this.subscription = subscription;
         this.paymentDate = paymentDate;
         this.amount = amount;
@@ -46,13 +41,6 @@ public class Payment {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
 
     public Subscription getSubscription() {
         return subscription;
@@ -82,6 +70,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
+                //", subscription=" + subscription +
                 ", paymentDate=" + paymentDate +
                 ", amount=" + amount +
                 '}';

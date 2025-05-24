@@ -11,6 +11,7 @@ public class Subscription {
     @Column(name = "subscription_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "subscription_type")
     private SubscriptionType subscriptionType;
 
@@ -57,5 +58,15 @@ public class Subscription {
 
     public void setPayments(Set<Payment> payments) {
         this.payments = payments;
+    }
+
+    @Override
+    public String toString() {
+        return "Subscription{" +
+                "id=" + id +
+                ", subscriptionType=" + subscriptionType +
+                ", price=" + price +
+                ", payments=" + payments +
+                '}';
     }
 }

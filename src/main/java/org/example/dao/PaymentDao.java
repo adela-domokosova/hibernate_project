@@ -1,10 +1,12 @@
 package org.example.dao;
 
+import org.example.entity.Member;
 import org.example.entity.Payment;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
-
+//TO dependency injection??? kvuli em co bude potřebokat každá metoda
 public class PaymentDao implements Dao<Payment> {
     @Override
     public Optional<Payment> get(long id) {
@@ -14,6 +16,12 @@ public class PaymentDao implements Dao<Payment> {
     @Override
     public List<Payment> getAll() {
         return List.of();
+    }
+
+    @Override
+    public List<Payment> getAll(EntityManager em) {
+        return em.createQuery("SELECT m FROM Payment m", Payment.class).getResultList();
+
     }
 
     @Override

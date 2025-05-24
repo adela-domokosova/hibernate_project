@@ -83,7 +83,8 @@ public class MemberService {
         List<Member> members = null;
         try {
             em.getTransaction().begin();
-            members = memberDao.getAll();
+            members = memberDao.getAll(em);
+            System.out.println("from dao " + members);
             //members = em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {

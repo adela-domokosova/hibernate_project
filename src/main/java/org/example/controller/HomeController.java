@@ -66,6 +66,8 @@ public class HomeController {
             stage.show();
         }catch (Exception e){
             //errorbox
+            LOG.error("Exception thrown" );
+            LOG.error(e.getMessage());
         }finally {
             LOG.info("done");
             assert em != null;
@@ -87,6 +89,8 @@ public class HomeController {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
+            LOG.error("Exception thrown" );
+            LOG.error(e.getMessage());
             //errorbox
         }finally {
             LOG.info("done");

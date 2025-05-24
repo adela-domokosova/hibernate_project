@@ -26,7 +26,7 @@ import java.util.Optional;
 
 
 public class MemberController {
-    private static  final Logger LOG = LoggerFactory.getLogger(HomeController.class);
+    private static  final Logger LOG = LoggerFactory.getLogger(MemberController.class);
     private MemberService memberService;
     @FXML
     private ListView<Member> memberListView;
@@ -47,6 +47,7 @@ public class MemberController {
         EntityManager em = Main.createEM();
         try {
             List<Member> members = memberService.getAllMembers(em);
+            System.out.println(members);
             memberList = FXCollections.observableArrayList(members);
             memberListView.setItems(memberList);
         } catch (Exception e) {

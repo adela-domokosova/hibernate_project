@@ -65,10 +65,8 @@ public class PaymentController {
 
 
     public void switchToHome(ActionEvent event) throws IOException {
-
         EntityManager em = null;
         //try blok s entity manaerem
-
         try{
             em = Main.createEM();
             Parent root = FXMLLoader.load(getClass().getResource("/home.fxml"));

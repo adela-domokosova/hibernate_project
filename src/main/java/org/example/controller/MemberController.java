@@ -20,6 +20,7 @@ import org.example.services.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -107,6 +108,33 @@ public class MemberController {
                 memberService.updateMember(em, selectedMember.getId(), newFirstName, newLastName, newEmail);
                 loadMembers();
             }
+        } else {
+            showAlert("No Member Selected", "Please select a member to edit.");
+        }
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+    }
+
+
+    public void showDetail(ActionEvent event) throws IOException {
+        EntityManager em = Main.createEM();
+        Member selectedMember = memberListView.getSelectionModel().getSelectedItem();
+        if (selectedMember != null) {
+            Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
+
+            // Kontrola, zda záznam stále existuje
+            if (existingMember.isEmpty()) {
+                showAlert("Member Not Found", "The selected member has been deleted by another user.");
+                loadMembers();
+                return;
+            }
+
+            Parent root = FXMLLoader.load(getClass().getResource("/memberdetail.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } else {
             showAlert("No Member Selected", "Please select a member to edit.");
         }

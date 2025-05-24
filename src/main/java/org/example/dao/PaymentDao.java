@@ -2,6 +2,7 @@ package org.example.dao;
 
 import org.example.entity.Member;
 import org.example.entity.Payment;
+import org.example.entity.Subscription;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Optional;
 public class PaymentDao implements Dao<Payment> {
     @Override
     public Optional<Payment> get(EntityManager em, long id) {
-        return Optional.empty();
+        Payment payment = em.find(Payment.class, id);
+        return Optional.ofNullable(payment);
     }
 
     @Override

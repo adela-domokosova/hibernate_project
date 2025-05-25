@@ -23,6 +23,10 @@
                 <Label fx:id="nameLabel" text="Name: " />
                 <Label fx:id="registrationLabel" text="Registration date: " />
                 <Label fx:id="emailLabel" text="Email: " />
+                <Label text="Subscriptions" style="-fx-font-size: 20px; -fx-padding: 10;"/>
+                <ListView fx:id="subscriptionsListView" prefHeight="200.0" />
+
+
             </VBox>
         </center>
         <bottom>

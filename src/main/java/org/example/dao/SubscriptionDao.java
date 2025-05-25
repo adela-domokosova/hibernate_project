@@ -38,4 +38,10 @@ public class SubscriptionDao implements Dao<Subscription> {
     public void delete(Subscription subscription) {
 
     }
+
+    public List<Subscription> getByMember(EntityManager em, Member member) {
+        return em.createQuery("SELECT s FROM Subscription s WHERE s.member = :member", Subscription.class)
+                .setParameter("member", member)
+                .getResultList();
+    }
 }

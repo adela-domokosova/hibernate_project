@@ -60,4 +60,17 @@ public class SubscriptionService {
         System.out.println(subscription);
         return subscription;
     }
+    public List<Subscription> getSubscriptionsByMember(EntityManager em, Member member) {
+        //vreti to nějaký list od subs
+        List<Subscription> subscriptions = null;
+        try {
+            em.getTransaction().begin();
+            subscriptions = subscriptionDao.getByMember(em, member);
+            em.getTransaction().commit();
+        }catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
+        return subscriptions;
+    }
 }

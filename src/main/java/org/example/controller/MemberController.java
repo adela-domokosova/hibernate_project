@@ -130,9 +130,13 @@ public class MemberController {
                 return;
             }
 
-            Parent root = FXMLLoader.load(getClass().getResource("/memberdetail.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/memberdetail.fxml"));
+            Parent root = loader.load();
+
+            MemberDetailController controller = loader.getController();
+            controller.setMember(selectedMember);
             scene = new Scene(root);
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } else {

@@ -30,6 +30,13 @@ public class HomeController {
     private Button subscriptionListButton;
     @FXML
     private Button paymentListButton;
+    
+    public HomeController() {
+    }
+    
+    public void initialize() {
+    }
+    
     private void setButtonsDisabled(boolean disabled) {
         if (memberListButton != null) {
             memberListButton.setDisable(disabled);
@@ -44,7 +51,7 @@ public class HomeController {
 
     protected <T> void runTask(Task<T> task, Consumer<T> onSuccess) {
         if (taskRunning) {
-            LOG.warn("Task already running, ignoring new request.");
+            LOG.warn("Task already running, please wait");
             return;
         }
 
@@ -63,7 +70,8 @@ public class HomeController {
             taskRunning = false;
             Platform.runLater(() -> {
                 setButtonsDisabled(false);
-                LOG.error("Task failed: " + e.getSource().getException().getMessage(), e.getSource().getException());
+                LOG.error("Task failed: {}", e.getSource().getException().getMessage(), 
+                    e.getSource().getException());
             });
         });
 
@@ -71,6 +79,7 @@ public class HomeController {
     }
 
     public void switchToMemberList(ActionEvent event) {
+        LOG.info("Opening member list");
         runTask(new Task<Parent>() {
             @Override
             protected Parent call() throws Exception {
@@ -81,7 +90,6 @@ public class HomeController {
                     return root;
                 } finally {
                     if (em != null) {
-                        LOG.info("Closing EntityManager for MemberList.");
                         em.close();
                     }
                 }
@@ -95,6 +103,7 @@ public class HomeController {
     }
 
     public void switchToSubscriptionList(ActionEvent event) {
+        LOG.info("Opening subscription list");
         runTask(new Task<Parent>() {
             @Override
             protected Parent call() throws Exception {
@@ -105,7 +114,6 @@ public class HomeController {
                     return root;
                 } finally {
                     if (em != null) {
-                        LOG.info("Closing EntityManager for SubscriptionList.");
                         em.close();
                     }
                 }
@@ -119,6 +127,7 @@ public class HomeController {
     }
 
     public void switchToPaymentList(ActionEvent event) {
+        LOG.info("Opening payment list");
         runTask(new Task<Parent>() {
             @Override
             protected Parent call() throws Exception {
@@ -129,7 +138,6 @@ public class HomeController {
                     return root;
                 } finally {
                     if (em != null) {
-                        LOG.info("Closing EntityManager for PaymentList.");
                         em.close();
                     }
                 }

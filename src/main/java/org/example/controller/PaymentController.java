@@ -24,8 +24,9 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
 public class PaymentController {
-    private static  final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -35,7 +36,6 @@ public class PaymentController {
     public ObservableList<Payment> paymentList;
 
     public PaymentController() {
-
         this.paymentService = new PaymentService(new PaymentDao());
     }
 
@@ -47,11 +47,11 @@ public class PaymentController {
         EntityManager em = Main.createEM();
         try {
             List<Payment> payments = paymentService.getAllPayments(em);
-            System.out.println(payments);
             paymentList = FXCollections.observableArrayList(payments);
             paymentListView.setItems(paymentList);
+            LOG.info("Payment list loaded");
         } catch (Exception e) {
-            LOG.error("Failed to load members", e);
+            LOG.error("Failed to load payments", e);
             showAlert("Error", "Failed to load payments.");
         } finally {
             if (em != null && em.isOpen()) {
@@ -59,7 +59,6 @@ public class PaymentController {
             }
         }
     }
-
 
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
@@ -70,20 +69,22 @@ public class PaymentController {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            LOG.info("Returned to home screen");
         }catch (Exception e){
+            LOG.error("Error navigating to home", e);
         }finally {
-            LOG.info("done");
             assert em != null;
             em.close();
         }
-
     }
+    
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
     }
+    
     private String promptForInput(String title, String content, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);

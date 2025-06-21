@@ -27,7 +27,7 @@ import java.util.Optional;
 
 
 public class MemberController {
-    private static  final Logger LOG = LoggerFactory.getLogger(MemberController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MemberController.class);
     private MemberService memberService;
     @FXML
     private ListView<Member> memberListView;
@@ -48,9 +48,9 @@ public class MemberController {
         EntityManager em = Main.createEM();
         try {
             List<Member> members = memberService.getAllMembers(em);
-            System.out.println(members);
             memberList = FXCollections.observableArrayList(members);
             memberListView.setItems(memberList);
+            LOG.info("Member list loaded");
         } catch (Exception e) {
             LOG.error("Failed to load members", e);
             showAlert("Error", "Failed to load members.");
@@ -69,11 +69,10 @@ public class MemberController {
             String newLastName = promptForInput("new Member", "Enter new last name:", "lastname");
             String newEmail = promptForInput("new Member", "Enter new email:", "email");
 
-
             LocalDateTime dateTime = LocalDateTime.now();
 
             memberService.saveMember(em, newFirstName, newLastName, newEmail, dateTime);
-            LOG.info("info given to services layer");
+            LOG.info("Created new member: {} {}", newFirstName, newLastName);
             loadMembers();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -94,6 +93,7 @@ public class MemberController {
             Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
 
             if (existingMember.isEmpty()) {
+                LOG.warn("Member no longer exists in database");
                 showAlert("Member Not Found", "The selected member has been deleted by another user.");
                 loadMembers();
                 return;
@@ -105,6 +105,7 @@ public class MemberController {
 
             if (newFirstName != null && newLastName != null && newEmail != null) {
                 memberService.updateMember(em, selectedMember.getId(), newFirstName, newLastName, newEmail);
+                LOG.info("Updated member: {} {}", newFirstName, newLastName);
                 loadMembers();
             }
         } else {
@@ -123,6 +124,7 @@ public class MemberController {
             Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
 
             if (existingMember.isEmpty()) {
+                LOG.warn("Member no longer exists in database");
                 showAlert("Member Not Found", "The selected member has been deleted by another user.");
                 loadMembers();
                 return;
@@ -137,8 +139,10 @@ public class MemberController {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
+            LOG.info("Opened details for member: {} {}", 
+                selectedMember.getFirstName(), selectedMember.getLastName());
         } else {
-            showAlert("No Member Selected", "Please select a member to edit.");
+            showAlert("No Member Selected", "Please select a member to show details.");
         }
         if (em != null && em.isOpen()) {
             em.close();
@@ -146,7 +150,7 @@ public class MemberController {
     }
 
     @FXML
-    public void onDeleteMember( ActionEvent event) {
+    public void onDeleteMember(ActionEvent event) {
         EntityManager em = Main.createEM();
         Member selectedMember = memberListView.getSelectionModel().getSelectedItem();
         if (selectedMember != null) {
@@ -154,6 +158,8 @@ public class MemberController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 memberService.deleteMember(em, selectedMember.getId());
+                LOG.info("Deleted member: {} {}", 
+                    selectedMember.getFirstName(), selectedMember.getLastName());
                 loadMembers();
             }
         } else {
@@ -190,13 +196,13 @@ public class MemberController {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            LOG.info("Returned to home screen");
         }catch (Exception e){
+            LOG.error("Error navigating to home", e);
         }finally {
-            LOG.info("done");
             if (em != null && em.isOpen()) {
                 em.close();
             }
         }
-
     }
 }

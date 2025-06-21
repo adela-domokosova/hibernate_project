@@ -16,11 +16,11 @@ import java.util.Optional;
 public class MemberService {
     private static final Logger LOG = LoggerFactory.getLogger(MemberService.class);
 
-
     private MemberDao memberDao;
     public MemberService(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
+    
     public void saveMember(EntityManager em, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         try {
             em.getTransaction().begin();
@@ -29,7 +29,9 @@ public class MemberService {
             member.setEmail(email);
             em.persist(member);
             em.getTransaction().commit();
+            LOG.info("New member created: {} {}", firstName, lastName);
         } catch (Exception e) {
+            LOG.error("Couldn't create member", e);
             em.getTransaction().rollback();
             e.printStackTrace();
         }
@@ -44,9 +46,13 @@ public class MemberService {
                 member.setFirstName(firstName);
                 member.setLastName(lastName);
                 member.setEmail(email);
+                LOG.info("Updated member: {} {}", firstName, lastName);
+            } else {
+                LOG.warn("Tried to update non-existent member (ID: {})", id);
             }
             em.getTransaction().commit();
         } catch (Exception e) {
+            LOG.error("Problem updating member", e);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -64,16 +70,16 @@ public class MemberService {
             if (memberToDelete != null) {
                 em.remove(memberToDelete);
                 em.getTransaction().commit();
-                LOG.info("Member with ID {} deleted successfully.", memberId);
+                LOG.info("Deleted member with ID {}", memberId);
             } else {
-                LOG.warn("Attempted to delete non-existent member with ID: {}", memberId);
+                LOG.warn("Tried to delete non-existent member (ID: {})", memberId);
                 em.getTransaction().rollback();
             }
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            LOG.error("Error deleting member with ID {}: {}", memberId, e.getMessage());
+            LOG.error("Problem deleting member (ID: {})", memberId, e);
             throw e;
         }
     }
@@ -83,9 +89,10 @@ public class MemberService {
         try {
             em.getTransaction().begin();
             members = memberDao.getAll(em);
-            System.out.println("from dao " + members);
             em.getTransaction().commit();
+            LOG.info("Retrieved all members");
         } catch (Exception e) {
+            LOG.error("Couldn't retrieve members", e);
             em.getTransaction().rollback();
             e.printStackTrace();
         }
@@ -98,7 +105,11 @@ public class MemberService {
             em.getTransaction().begin();
             member = memberDao.get(em, id);
             em.getTransaction().commit();
+            if (!member.isPresent()) {
+                LOG.info("Member not found (ID: {})", id);
+            }
         } catch (Exception e) {
+            LOG.error("Problem retrieving member", e);
             em.getTransaction().rollback();
             e.printStackTrace();
         }

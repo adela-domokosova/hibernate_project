@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemberDetailController {
-    private static  final Logger LOG = LoggerFactory.getLogger(MemberDetailController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MemberDetailController.class);
     private MemberService memberService;
     private SubscriptionService subscriptionService;
     private Stage stage;
@@ -44,6 +44,7 @@ public class MemberDetailController {
     @FXML private Label registrationLabel;
     @FXML
     private ListView<Subscription> subscriptionsListView;
+    
     public MemberDetailController(){
         this.memberService = new MemberService(new MemberDao());
         this.subscriptionService = new SubscriptionService(new SubscriptionDao());
@@ -51,13 +52,12 @@ public class MemberDetailController {
 
     public void setMember(Member member) {
         this.member = member;
-        LOG.info("Member set: " + member);
+        LOG.info("Showing details for {}", member.getFirstName());
         updateMemberDetails();
     }
 
     private void initialize(){
     }
-
 
     private void updateMemberDetails() {
         EntityManager em = null;
@@ -99,18 +99,17 @@ public class MemberDetailController {
                         }
                     }
                 });
+                LOG.info("Member details loaded");
             }
 
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            LOG.error("Problem loading member details", e);
         } finally {
-            LOG.info("done");
             if (em != null) {
                 em.close();
             }
         }
     }
-
 
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
@@ -121,12 +120,12 @@ public class MemberDetailController {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            LOG.info("Returned to home screen");
         }catch (Exception e){
+            LOG.error("Error navigating to home", e);
         }finally {
-            LOG.info("done");
             assert em != null;
             em.close();
         }
-
     }
 }

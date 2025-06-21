@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SubscriptionController {
-    private static  final Logger LOG = LoggerFactory.getLogger(SubscriptionController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SubscriptionController.class);
     @FXML
     public ListView<Subscription> subscriptionListView;
     public ObservableList<Subscription> subscriptionList;
@@ -56,12 +56,12 @@ public class SubscriptionController {
         EntityManager em = Main.createEM();
         try {
             List<Subscription> subscriptions = subscriptionService.getAllSubscriptions(em);
-            System.out.println(subscriptions);
             subscriptionList = FXCollections.observableArrayList(subscriptions);
             subscriptionListView.setItems(subscriptionList);
+            LOG.info("Subscription list loaded");
         } catch (Exception e) {
-            LOG.error("Failed to load members", e);
-            showAlert("Error", "Failed to load members.");
+            LOG.error("Failed to load subscriptions", e);
+            showAlert("Error", "Failed to load subscriptions.");
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -78,7 +78,6 @@ public class SubscriptionController {
 
     @FXML
     public void switchToHome(ActionEvent event) throws IOException {
-
         EntityManager em = null;
 
         try{
@@ -88,14 +87,15 @@ public class SubscriptionController {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            LOG.info("Returned to home screen");
         }catch (Exception e){
+            LOG.error("Error navigating to home", e);
         }finally {
-            LOG.info("done");
             assert em != null;
             em.close();
         }
-
     }
+    
     private String promptForInput(String title, String content, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);
@@ -111,28 +111,34 @@ public class SubscriptionController {
             Optional<Subscription> existingSub = subscriptionService.getSubscriptionById(em, selectedSubscription.getId());
 
             if (existingSub.isEmpty()) {
+                LOG.warn("Subscription no longer exists in database");
                 showAlert("Subscription Not Found", "The selected subscription has been deleted by another user.");
                 loadSubscriptions();
                 return;
             }
+            
             Subscription subscription = existingSub.get();
-            if (subscription.getActive() == true){
-                showAlert("Subscription is payed", "This subscription was already payed by another user.");
+            if (subscription.getActive()) {
+                LOG.warn("Subscription already paid");
+                showAlert("Subscription is paid", "This subscription was already paid by another user.");
                 loadSubscriptions();
                 return;
             }
+            
             Payment payment = new Payment();
             payment.setSubscription(subscription);
-            Double amount = Double.valueOf(promptForInput("Enter amount", "Enter amount payed:", "amount" ));
+            Double amount = Double.valueOf(promptForInput("Enter amount", "Enter amount paid:", "amount"));
             payment.setAmount(amount);
             payment.setPaymentDate(LocalDate.now());
-            System.out.println("payment" + payment);
+            
             paymentService.CreatePayment(em, payment);
             subscription.setActive(true);
+            LOG.info("Created payment for subscription");
             loadSubscriptions();
         } else {
-            showAlert("No Member Selected", "Please select a member to edit.");
+            showAlert("No Subscription Selected", "Please select a subscription to create payment.");
         }
+        
         if (em != null && em.isOpen()) {
             em.close();
         }

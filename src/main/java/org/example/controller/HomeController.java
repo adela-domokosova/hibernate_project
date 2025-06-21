@@ -1,108 +1,150 @@
 package org.example.controller;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML; // Import pro @FXML anotaci
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button; // Import pro Button
 import javafx.stage.Stage;
+import javafx.application.Platform;
 import org.example.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.util.function.Consumer;
 
-//otestovat odpojení DB a to ui
-//entity manaera sem do každé metody??? podle prednasky. typické pro spring aplikace
-//je do dobre i při spadnutí aplikace
-//executor v controlleru
-
-//použít verzování?????
-
-//task<list<user>> new task ->override ->bindbout jeoh metody na ui update message a updateprogress
 public class HomeController {
-    private static  final Logger LOG = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private volatile boolean taskRunning = false;
 
-    //public controller konstruktor se Executors.newSinleTreadExecutor()
+    // Přidáme @FXML anotace pro injektování tlačítek z FXML
+    @FXML
+    private Button memberListButton;
+    @FXML
+    private Button subscriptionListButton;
+    @FXML
+    private Button paymentListButton;
 
-    public void switchToMemberList(ActionEvent event) throws IOException {
+    // Pomocná metoda pro zakázání/povolení všech relevantních tlačítek
+    private void setButtonsDisabled(boolean disabled) {
+        if (memberListButton != null) {
+            memberListButton.setDisable(disabled);
+        }
+        if (subscriptionListButton != null) {
+            subscriptionListButton.setDisable(disabled);
+        }
+        if (paymentListButton != null) {
+            paymentListButton.setDisable(disabled);
+        }
+    }
 
-        EntityManager em = null;
-        //try blok s entity manaerem
+    protected <T> void runTask(Task<T> task, Consumer<T> onSuccess) {
+        if (taskRunning) {
+            LOG.warn("Task already running, ignoring new request.");
+            return;
+        }
 
-        try{
-            em = Main.createEM();
-            Parent root = FXMLLoader.load(getClass().getResource("/memberlist.fxml"));
+        taskRunning = true;
+        // OKAMŽITĚ zakázat tlačítka na JavaFX aplikačním vlákně
+        Platform.runLater(() -> setButtonsDisabled(true));
+
+        task.setOnSucceeded(e -> {
+            taskRunning = false;
+            Platform.runLater(() -> {
+                setButtonsDisabled(false); // Povolit tlačítka
+                onSuccess.accept(task.getValue());
+            });
+        });
+
+        task.setOnFailed(e -> {
+            taskRunning = false;
+            Platform.runLater(() -> {
+                setButtonsDisabled(false); // Povolit tlačítka
+                LOG.error("Task failed: " + e.getSource().getException().getMessage(), e.getSource().getException());
+                // Zde můžete zobrazit chybové hlášení uživateli
+            });
+        });
+
+        new Thread(task).start();
+    }
+
+    public void switchToMemberList(ActionEvent event) {
+        runTask(new Task<Parent>() {
+            @Override
+            protected Parent call() throws Exception {
+                EntityManager em = null;
+                try {
+                    em = Main.createEM();
+                    Parent root = FXMLLoader.load(getClass().getResource("/memberlist.fxml"));
+                    return root;
+                } finally {
+                    if (em != null) {
+                        LOG.info("Closing EntityManager for MemberList.");
+                        em.close();
+                    }
+                }
+            }
+        }, root -> {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }catch (Exception e){
-            //errorbox
-        }finally {
-            LOG.info("done");
-            assert em != null;
-            em.close();
-            //is null -> vytvořit noveho
-        }
-
+        });
     }
 
-    public void switchToSubscriptionList(ActionEvent event) throws IOException {
-
-        EntityManager em = null;
-        //try blok s entity manaerem
-
-        try{
-            em = Main.createEM();
-            Parent root = FXMLLoader.load(getClass().getResource("/subscriptionlist.fxml"));
+    public void switchToSubscriptionList(ActionEvent event) {
+        runTask(new Task<Parent>() {
+            @Override
+            protected Parent call() throws Exception {
+                EntityManager em = null;
+                try {
+                    em = Main.createEM();
+                    Parent root = FXMLLoader.load(getClass().getResource("/subscriptionlist.fxml"));
+                    return root;
+                } finally {
+                    if (em != null) {
+                        LOG.info("Closing EntityManager for SubscriptionList.");
+                        em.close();
+                    }
+                }
+            }
+        }, root -> {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }catch (Exception e){
-            //errorbox
-            LOG.error("Exception thrown" );
-            LOG.error(e.getMessage());
-        }finally {
-            LOG.info("done");
-            assert em != null;
-            em.close();
-            //is null -> vytvořit noveho
-        }
-
+        });
     }
-    public void switchToPaymentList(ActionEvent event) throws IOException {
 
-        EntityManager em = null;
-        //try blok s entity manaerem
-
-        try{
-            em = Main.createEM();
-            Parent root = FXMLLoader.load(getClass().getResource("/paymentlist.fxml"));
+    public void switchToPaymentList(ActionEvent event) {
+        runTask(new Task<Parent>() {
+            @Override
+            protected Parent call() throws Exception {
+                EntityManager em = null;
+                try {
+                    em = Main.createEM();
+                    Parent root = FXMLLoader.load(getClass().getResource("/paymentlist.fxml"));
+                    return root;
+                } finally {
+                    if (em != null) {
+                        LOG.info("Closing EntityManager for PaymentList.");
+                        em.close();
+                    }
+                }
+            }
+        }, root -> {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }catch (Exception e){
-            LOG.error("Exception thrown" );
-            LOG.error(e.getMessage());
-            //errorbox
-        }finally {
-            LOG.info("done");
-            assert em != null;
-            em.close();
-            //is null -> vytvořit noveho
-        }
-
+        });
     }
-
-    public void handleButtonClick(ActionEvent actionEvent) {
-        System.out.println("hello");
-    }
-
 }

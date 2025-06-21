@@ -9,7 +9,6 @@
             prefHeight="300.0" prefWidth="400.0">
     <children>
         <Label text="Welcome to JavaFX!" layoutX="140" layoutY="100"/>
-        <Button text="Click Me" layoutX="160" layoutY="150" onAction="#handleButtonClick"/>
     </children>
 
     <VBox spacing="10" alignment="CENTER">

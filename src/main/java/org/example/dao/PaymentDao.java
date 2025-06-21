@@ -7,7 +7,6 @@ import org.example.entity.Subscription;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
-//TO dependency injection??? kvuli em co bude potřebokat každá metoda
 public class PaymentDao implements Dao<Payment> {
     @Override
     public Optional<Payment> get(EntityManager em, long id) {

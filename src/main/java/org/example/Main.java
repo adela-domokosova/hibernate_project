@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-//zde budu vyrábět ty entyti manaery
 public class Main extends Application {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 

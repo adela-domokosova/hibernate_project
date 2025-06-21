@@ -93,7 +93,6 @@ public class MemberController {
         if (selectedMember != null) {
             Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
 
-            // Kontrola, zda záznam stále existuje
             if (existingMember.isEmpty()) {
                 showAlert("Member Not Found", "The selected member has been deleted by another user.");
                 loadMembers();
@@ -123,7 +122,6 @@ public class MemberController {
         if (selectedMember != null) {
             Optional<Member> existingMember = memberService.getMemberById(em, selectedMember.getId());
 
-            // Kontrola, zda záznam stále existuje
             if (existingMember.isEmpty()) {
                 showAlert("Member Not Found", "The selected member has been deleted by another user.");
                 loadMembers();
@@ -184,7 +182,6 @@ public class MemberController {
 
     public void onBackButton(ActionEvent event) {
         EntityManager em = null;
-        //try blok s entity manaerem
 
         try{
             em = Main.createEM();
@@ -194,13 +191,11 @@ public class MemberController {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
-            //errorbox
         }finally {
             LOG.info("done");
             if (em != null && em.isOpen()) {
                 em.close();
             }
-            //is null -> vytvořit noveho
         }
 
     }

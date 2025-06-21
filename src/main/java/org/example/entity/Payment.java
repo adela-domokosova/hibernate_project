@@ -70,7 +70,6 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                //", subscription=" + subscription +
                 ", paymentDate=" + paymentDate +
                 ", amount=" + amount +
                 '}';

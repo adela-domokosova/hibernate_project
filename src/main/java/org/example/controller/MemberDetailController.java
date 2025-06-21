@@ -114,7 +114,6 @@ public class MemberDetailController {
 
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
-        //try blok s entity manaerem
         try{
             em = Main.createEM();
             Parent root = FXMLLoader.load(getClass().getResource("/home.fxml"));
@@ -123,12 +122,10 @@ public class MemberDetailController {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
-            //errorbox
         }finally {
             LOG.info("done");
             assert em != null;
             em.close();
-            //is null -> vytvořit noveho
         }
 
     }

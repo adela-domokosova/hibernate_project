@@ -21,7 +21,6 @@ public class SubscriptionService {
             em.getTransaction().begin();
             subscriptions = subscriptionDao.getAll(em);
             System.out.println("from dao " + subscriptions);
-            //members = em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -29,7 +28,6 @@ public class SubscriptionService {
         }
         return subscriptions;
     }
-  //přifat membra, kterému sub patři
     public void saveSubscription(EntityManager em, SubscriptionType type, Double price, Member member) {
         try {
             em.getTransaction().begin();
@@ -61,7 +59,6 @@ public class SubscriptionService {
         return subscription;
     }
     public List<Subscription> getSubscriptionsByMember(EntityManager em, Member member) {
-        //vreti to nějaký list od subs
         List<Subscription> subscriptions = null;
         try {
             em.getTransaction().begin();

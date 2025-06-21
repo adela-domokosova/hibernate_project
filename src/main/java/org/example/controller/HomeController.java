@@ -2,12 +2,12 @@ package org.example.controller;
 
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML; // Import pro @FXML anotaci
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button; // Import pro Button
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import org.example.Main;
@@ -24,16 +24,12 @@ public class HomeController {
     private Scene scene;
     private Parent root;
     private volatile boolean taskRunning = false;
-
-    // Přidáme @FXML anotace pro injektování tlačítek z FXML
     @FXML
     private Button memberListButton;
     @FXML
     private Button subscriptionListButton;
     @FXML
     private Button paymentListButton;
-
-    // Pomocná metoda pro zakázání/povolení všech relevantních tlačítek
     private void setButtonsDisabled(boolean disabled) {
         if (memberListButton != null) {
             memberListButton.setDisable(disabled);
@@ -53,13 +49,12 @@ public class HomeController {
         }
 
         taskRunning = true;
-        // OKAMŽITĚ zakázat tlačítka na JavaFX aplikačním vlákně
         Platform.runLater(() -> setButtonsDisabled(true));
 
         task.setOnSucceeded(e -> {
             taskRunning = false;
             Platform.runLater(() -> {
-                setButtonsDisabled(false); // Povolit tlačítka
+                setButtonsDisabled(false);
                 onSuccess.accept(task.getValue());
             });
         });
@@ -67,9 +62,8 @@ public class HomeController {
         task.setOnFailed(e -> {
             taskRunning = false;
             Platform.runLater(() -> {
-                setButtonsDisabled(false); // Povolit tlačítka
+                setButtonsDisabled(false);
                 LOG.error("Task failed: " + e.getSource().getException().getMessage(), e.getSource().getException());
-                // Zde můžete zobrazit chybové hlášení uživateli
             });
         });
 

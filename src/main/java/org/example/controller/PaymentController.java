@@ -24,9 +24,6 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-//payments jsou view only - bude možné v subscriptionControlleru vytvořit payment pro daný sub
-//možná můžu přidat filtrování
 public class PaymentController {
     private static  final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
     private Stage stage;
@@ -66,7 +63,6 @@ public class PaymentController {
 
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
-        //try blok s entity manaerem
         try{
             em = Main.createEM();
             Parent root = FXMLLoader.load(getClass().getResource("/home.fxml"));
@@ -75,12 +71,10 @@ public class PaymentController {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
-            //errorbox
         }finally {
             LOG.info("done");
             assert em != null;
             em.close();
-            //is null -> vytvořit noveho
         }
 
     }

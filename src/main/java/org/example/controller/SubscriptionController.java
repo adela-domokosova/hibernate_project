@@ -80,7 +80,6 @@ public class SubscriptionController {
     public void switchToHome(ActionEvent event) throws IOException {
 
         EntityManager em = null;
-        //try blok s entity manaerem
 
         try{
             em = Main.createEM();
@@ -90,12 +89,10 @@ public class SubscriptionController {
             stage.setScene(scene);
             stage.show();
         }catch (Exception e){
-            //errorbox
         }finally {
             LOG.info("done");
             assert em != null;
             em.close();
-            //is null -> vytvořit noveho
         }
 
     }
@@ -113,7 +110,6 @@ public class SubscriptionController {
         if (selectedSubscription != null) {
             Optional<Subscription> existingSub = subscriptionService.getSubscriptionById(em, selectedSubscription.getId());
 
-            // Kontrola, zda záznam stále existuje
             if (existingSub.isEmpty()) {
                 showAlert("Subscription Not Found", "The selected subscription has been deleted by another user.");
                 loadSubscriptions();

@@ -19,7 +19,6 @@ public class PaymentService {
                 em.getTransaction().begin();
                 payments = paymentDao.getAll(em);
                 System.out.println("from dao " + payments);
-                //members = em.createQuery("SELECT m FROM Member m", Member.class).getResultList();
                 em.getTransaction().commit();
             } catch (Exception e) {
                 em.getTransaction().rollback();

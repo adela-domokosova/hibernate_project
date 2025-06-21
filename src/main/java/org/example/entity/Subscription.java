@@ -110,7 +110,6 @@ public class Subscription {
                 "id=" + id +
                 ", subscriptionType=" + subscriptionType +
                 ", price=" + price +
-                //", member=" + member +
                 ", startDate=" + startDate +
                 ", createdDate=" + createdDate +
                 ", active=" + active +

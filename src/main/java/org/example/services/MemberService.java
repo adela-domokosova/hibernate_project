@@ -1,7 +1,10 @@
 package org.example.services;
 
+import org.example.controller.HomeController;
 import org.example.dao.MemberDao;
 import org.example.entity.Member;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +20,8 @@ import java.util.Optional;
 //member service by mělo komunikovat s DAO specifické tabulky
 //state management - loadin atd pro ui
 public class MemberService {
+    private static final Logger LOG = LoggerFactory.getLogger(MemberService.class);
+
 
     private MemberDao memberDao;
     //zde volat dao metody a taky transakce
@@ -63,18 +68,28 @@ public class MemberService {
     }
 
     // Mazání člena
-    public void deleteMember(EntityManager em, Long id) {
-        try {
+    public void deleteMember(EntityManager em, Long memberId) {
+        // Start a transaction if one isn't active
+        if (!em.getTransaction().isActive()) {
             em.getTransaction().begin();
-            Optional<Member> member = memberDao.get(em, id);
-            //Member member = em.find(Member.class, id);
-            if (member.isPresent()) {
-                em.remove(member);
+        }
+        try {
+            Member memberToDelete = em.find(Member.class, memberId);
+
+            if (memberToDelete != null) {
+                em.remove(memberToDelete);
+                em.getTransaction().commit();
+                LOG.info("Member with ID {} deleted successfully.", memberId);
+            } else {
+                LOG.warn("Attempted to delete non-existent member with ID: {}", memberId);
+                em.getTransaction().rollback();
             }
-            em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            LOG.error("Error deleting member with ID {}: {}", memberId, e.getMessage());
+            throw e;
         }
     }
 

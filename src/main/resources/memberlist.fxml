@@ -21,7 +21,7 @@
     <bottom>
         <HBox spacing="10" style="-fx-padding: 10;">
             <Button text="Edit" onAction="#onEditMember" />
-            <Button text="Delete" onAction="#onDeleteMember" />
+            <!-- <Button text="Delete" onAction="#onDeleteMember" /> -->
             <Button text="Create" onAction="#onCreateMember" />
             <Button text="Detail" onAction="#showDetail" />
 

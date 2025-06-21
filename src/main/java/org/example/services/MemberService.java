@@ -17,10 +17,17 @@ public class MemberService {
     private static final Logger LOG = LoggerFactory.getLogger(MemberService.class);
 
     private MemberDao memberDao;
+    
+    /**
+     * Konstruktor
+     */
     public MemberService(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
     
+    /**
+     * Vytvoří nového člena v databázi
+     */
     public void saveMember(EntityManager em, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         try {
             em.getTransaction().begin();
@@ -37,6 +44,10 @@ public class MemberService {
         }
     }
 
+    /**
+     * Aktualizuje údaje o členovi
+     * Najde člena podle ID a změní jeho údaje
+     */
     public void updateMember(EntityManager em, Long id, String firstName, String lastName, String email) {
         try {
             em.getTransaction().begin();
@@ -60,6 +71,10 @@ public class MemberService {
         }
     }
 
+    /**
+     * Smaže člena z databáze
+     * Pokud člen existuje, odstraní ho, jinak neudělá nic
+     */
     public void deleteMember(EntityManager em, Long memberId) {
         if (!em.getTransaction().isActive()) {
             em.getTransaction().begin();
@@ -84,6 +99,9 @@ public class MemberService {
         }
     }
 
+    /**
+     * Vrátí seznam všech členů
+     */
     public List<Member> getAllMembers(EntityManager em) {
         List<Member> members = null;
         try {
@@ -99,6 +117,10 @@ public class MemberService {
         return members;
     }
 
+    /**
+     * Najde člena podle ID
+     * Vrací Optional, protože člen nemusí existovat
+     */
     public Optional<Member> getMemberById(EntityManager em, Long id) {
         Optional<Member> member = null;
         try {

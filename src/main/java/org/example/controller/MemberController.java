@@ -36,14 +36,25 @@ public class MemberController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    
+    /**
+     * Konstruktor 
+     */
     public MemberController(){
         this.memberService = new MemberService(new MemberDao());
     }
 
+    /**
+     * Inicializační metoda 
+     * Načte členy do seznamu
+     */
     public void initialize(){
         loadMembers();
     }
 
+    /**
+     * Načte všechny členy z databáze a zobrazí je v seznamu
+     */
     private void loadMembers() {
         EntityManager em = Main.createEM();
         try {
@@ -61,6 +72,10 @@ public class MemberController {
         }
     }
     
+    /**
+     * Handler pro tlačítko vytvoření člena
+     * Zobrazí dialogy pro zadání údajů a vytvoří nového člena
+     */
     @FXML
     private void onCreateMember(ActionEvent event) {
         EntityManager em = Main.createEM();
@@ -85,6 +100,10 @@ public class MemberController {
         }
     }
 
+    /**
+     * Handler pro tlačítko úpravy člena
+     * Umožňuje editovat údaje vybraného člena
+     */
     @FXML
     private void onEditMember(ActionEvent event) {
         EntityManager em = Main.createEM();
@@ -116,7 +135,10 @@ public class MemberController {
         }
     }
 
-
+    /**
+     * Zobrazí detailní informace o vybraném členovi
+     * Přepne na obrazovku s detaily a předplatnými člena
+     */
     public void showDetail(ActionEvent event) throws IOException {
         EntityManager em = Main.createEM();
         Member selectedMember = memberListView.getSelectionModel().getSelectedItem();
@@ -149,6 +171,10 @@ public class MemberController {
         }
     }
 
+    /**
+     * Handler pro tlačítko smazání člena
+     * Zobrazí potvrzovací dialog a smaže vybraného člena
+     */
     @FXML
     public void onDeleteMember(ActionEvent event) {
         EntityManager em = Main.createEM();
@@ -170,7 +196,9 @@ public class MemberController {
         }
     }
 
-
+    /**
+     * Pomocná metoda pro zobrazení dialogu pro zadání hodnoty
+     */
     private String promptForInput(String title, String content, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);
@@ -179,6 +207,9 @@ public class MemberController {
         return (String) ((Optional<?>) result).orElse(null);
     }
 
+    /**
+     * Pomocná metoda pro zobrazení informační zprávy
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -186,6 +217,9 @@ public class MemberController {
         alert.showAndWait();
     }
 
+    /**
+     * Handler pro tlačítko návratu na hlavní obrazovku
+     */
     public void onBackButton(ActionEvent event) {
         EntityManager em = null;
 

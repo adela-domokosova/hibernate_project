@@ -35,14 +35,24 @@ public class PaymentController {
     public ListView<Payment> paymentListView;
     public ObservableList<Payment> paymentList;
 
+    /**
+     * Konstruktor 
+     */
     public PaymentController() {
         this.paymentService = new PaymentService(new PaymentDao());
     }
 
+    /**
+     * Inicializační metoda
+     * Načte platby do seznamu
+     */
     public void initialize(){
         loadPayments();
     }
 
+    /**
+     * Načte všechny platby z databáze a zobrazí je v seznamu
+     */
     private void loadPayments() {
         EntityManager em = Main.createEM();
         try {
@@ -60,6 +70,10 @@ public class PaymentController {
         }
     }
 
+    /**
+     * Handler pro tlačítko návratu na hlavní obrazovku
+     * Přepne zpět na úvodní menu aplikace
+     */
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
         try{
@@ -78,6 +92,9 @@ public class PaymentController {
         }
     }
     
+    /**
+     * Pomocná metoda pro zobrazení zprávy
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -85,6 +102,9 @@ public class PaymentController {
         alert.showAndWait();
     }
     
+    /**
+     * Pomocná metoda pro zobrazení dialogu pro zadání hodnoty
+     */
     private String promptForInput(String title, String content, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);

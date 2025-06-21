@@ -42,16 +42,26 @@ public class SubscriptionController {
     private PaymentService paymentService;
 
 
+    /**
+     * Konstruktor
+     */
     public SubscriptionController() {
         this.subscriptionService = new SubscriptionService(new SubscriptionDao());
         this.paymentService = new PaymentService(new PaymentDao());
     }
 
 
+    /**
+     * Inicializační metoda
+     * Načte předplatná do seznamu
+     */
     public void initialize(){
         loadSubscriptions();
     }
 
+    /**
+     * Načte všechna předplatná z databáze a zobrazí je v seznamu
+     */
     private void loadSubscriptions() {
         EntityManager em = Main.createEM();
         try {
@@ -69,6 +79,10 @@ public class SubscriptionController {
         }
     }
 
+    /**
+     * Pomocná metoda pro zobrazení zprávy
+     * Používá se pro zobrazení chyb a informací uživateli
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -76,6 +90,10 @@ public class SubscriptionController {
         alert.showAndWait();
     }
 
+    /**
+     * Handler pro tlačítko návratu na hlavní obrazovku
+     * Přepne zpět na úvodní menu aplikace
+     */
     @FXML
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
@@ -96,6 +114,9 @@ public class SubscriptionController {
         }
     }
     
+    /**
+     * Pomocná metoda pro zobrazení dialogu pro zadání hodnoty
+     */
     private String promptForInput(String title, String content, String defaultValue) {
         TextInputDialog dialog = new TextInputDialog(defaultValue);
         dialog.setTitle(title);
@@ -104,6 +125,10 @@ public class SubscriptionController {
         return (String) ((Optional<?>) result).orElse(null);
     }
 
+    /**
+     * Handler pro tlačítko vytvoření platby
+     * Vytvoří platbu pro vybrané předplatné a označí ho jako aktivní
+     */
     public void createPayment(ActionEvent actionEvent) {
         EntityManager em = Main.createEM();
         Subscription selectedSubscription = subscriptionListView.getSelectionModel().getSelectedItem();

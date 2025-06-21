@@ -31,12 +31,21 @@ public class HomeController {
     @FXML
     private Button paymentListButton;
     
+    /**
+     * Konstruktor
+     */
     public HomeController() {
     }
     
+    /**
+     * Inicializační metoda
+     */
     public void initialize() {
     }
     
+    /**
+     * Pomocná metoda pro zakázání/povolení tlačítek
+     */
     private void setButtonsDisabled(boolean disabled) {
         if (memberListButton != null) {
             memberListButton.setDisable(disabled);
@@ -49,6 +58,9 @@ public class HomeController {
         }
     }
 
+    /**
+     * Spustí asynchronní úlohu na pozadí
+     */
     protected <T> void runTask(Task<T> task, Consumer<T> onSuccess) {
         if (taskRunning) {
             LOG.warn("Task already running, please wait");
@@ -78,6 +90,10 @@ public class HomeController {
         new Thread(task).start();
     }
 
+    /**
+     * Přepne na obrazovku se seznamem členů
+     * Načte FXML a zobrazí seznam členů
+     */
     public void switchToMemberList(ActionEvent event) {
         LOG.info("Opening member list");
         runTask(new Task<Parent>() {
@@ -102,6 +118,10 @@ public class HomeController {
         });
     }
 
+    /**
+     * Přepne na obrazovku se seznamem předplatných
+     * Načte FXML a zobrazí seznam předplatných
+     */
     public void switchToSubscriptionList(ActionEvent event) {
         LOG.info("Opening subscription list");
         runTask(new Task<Parent>() {
@@ -126,6 +146,10 @@ public class HomeController {
         });
     }
 
+    /**
+     * Přepne na obrazovku se seznamem plateb
+     * Načte FXML a zobrazí seznam plateb
+     */
     public void switchToPaymentList(ActionEvent event) {
         LOG.info("Opening payment list");
         runTask(new Task<Parent>() {

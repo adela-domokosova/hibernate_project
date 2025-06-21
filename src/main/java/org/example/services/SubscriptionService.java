@@ -15,10 +15,16 @@ public class SubscriptionService {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriptionService.class);
     private final SubscriptionDao subscriptionDao;
     
+    /**
+     * Konstruktor služby pro práci s předplatnými
+     */
     public SubscriptionService(SubscriptionDao subscriptionDao) {
         this.subscriptionDao = subscriptionDao;
     }
 
+    /**
+     * Získá všechna předplatná z databáze
+     */
     public List<Subscription> getAllSubscriptions(EntityManager em) {
         List<Subscription> subscriptions = null;
         try {
@@ -34,6 +40,10 @@ public class SubscriptionService {
         return subscriptions;
     }
     
+    /**
+     * Vytvoří nové předplatné v databázi
+     * Spojí ho s konkrétním členem a nastaví typ a cenu
+     */
     public void saveSubscription(EntityManager em, SubscriptionType type, Double price, Member member) {
         try {
             em.getTransaction().begin();
@@ -51,6 +61,10 @@ public class SubscriptionService {
         }
     }
 
+    /**
+     * Najde předplatné podle ID
+     * Vrací Optional objekt, protože předplatné nemusí existovat
+     */
     public Optional<Subscription> getSubscriptionById(EntityManager em, Long id) {
         Optional<Subscription> subscription = null;
         try {
@@ -68,6 +82,9 @@ public class SubscriptionService {
         return subscription;
     }
     
+    /**
+     * Získá všechna předplatná konkrétního člena
+     */
     public List<Subscription> getSubscriptionsByMember(EntityManager em, Member member) {
         List<Subscription> subscriptions = null;
         try {

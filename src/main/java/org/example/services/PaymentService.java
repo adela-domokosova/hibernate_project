@@ -13,10 +13,16 @@ public class PaymentService {
     private final PaymentDao paymentDao;
 
 
+    /**
+     * Konstruktor
+     */
     public PaymentService(PaymentDao paymentDao) {
         this.paymentDao = paymentDao;
     }
     
+    /**
+     * Získá všechny platby z databáze
+     */
     public List<Payment> getAllPayments(EntityManager em) {
             List<Payment> payments = null;
             try {
@@ -32,6 +38,9 @@ public class PaymentService {
             return payments;
     }
 
+    /**
+     * Vytvoří novou platbu v databázi
+     */
     public void CreatePayment(EntityManager em, Payment payment) {
         try {
             em.getTransaction().begin();

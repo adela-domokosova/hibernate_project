@@ -45,20 +45,33 @@ public class MemberDetailController {
     @FXML
     private ListView<Subscription> subscriptionsListView;
     
+    /**
+     * Konstruktor
+     */
     public MemberDetailController(){
         this.memberService = new MemberService(new MemberDao());
         this.subscriptionService = new SubscriptionService(new SubscriptionDao());
     }
 
+    /**
+     * Nastaví člena
+     * Volá metodu pro aktualizaci UI s detaily
+     */
     public void setMember(Member member) {
         this.member = member;
         LOG.info("Showing details for {}", member.getFirstName());
         updateMemberDetails();
     }
 
+    /**
+     * Inicializační metoda
+     */
     private void initialize(){
     }
 
+    /**
+     * Aktualizuje UI s detaily člena a jeho předplatnými
+     */
     private void updateMemberDetails() {
         EntityManager em = null;
         try {
@@ -111,6 +124,10 @@ public class MemberDetailController {
         }
     }
 
+    /**
+     * Handler pro tlačítko návratu na hlavní obrazovku
+     * Přepne zpět na úvodní menu aplikace
+     */
     public void switchToHome(ActionEvent event) throws IOException {
         EntityManager em = null;
         try{

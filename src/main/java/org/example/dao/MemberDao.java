@@ -7,6 +7,10 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * DAO třída pro práci s členskou entitou
+ * Implementuje základní operace pro přístup k datům členů
+ */
 public class MemberDao implements Dao<Member>{
     @Override
     public Optional<Member> get(EntityManager em, long id) {

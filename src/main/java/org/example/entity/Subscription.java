@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Entitní třída pro předplatné
+ * Reprezentuje členská předplatná různých typů s informacemi o ceně, platnosti a stavu
+ */
 @Entity
 @Table(name = "subscription")
 public class Subscription {

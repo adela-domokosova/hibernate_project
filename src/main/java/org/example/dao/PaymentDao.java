@@ -7,6 +7,11 @@ import org.example.entity.Subscription;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+
+/**
+ * DAO třída pro práci s platbami
+ * Implementuje základní operace pro přístup k datům o platbách
+ */
 public class PaymentDao implements Dao<Payment> {
     @Override
     public Optional<Payment> get(EntityManager em, long id) {

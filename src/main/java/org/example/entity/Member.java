@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Entitní třída pro člena klubu
+ * Uchovává základní informace o členech jako jméno, příjmení, email a datum registrace
+ */
 @Entity
 @Table(name = "member")
 public class Member {

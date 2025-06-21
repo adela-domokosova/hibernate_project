@@ -3,6 +3,10 @@ package org.example.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Entitní třída pro platby
+ * Reprezentuje platební transakce spojené s předplatnými
+ */
 @Entity
 @Table(name = "payment")
 public class Payment {

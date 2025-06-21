@@ -7,6 +7,10 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * DAO třída pro práci s předplatnými
+ * Implementuje základní operace pro přístup k datům
+ */
 public class SubscriptionDao implements Dao<Subscription> {
     @Override
     public Optional<Subscription> get(EntityManager em, long id) {

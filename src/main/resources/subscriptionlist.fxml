@@ -21,6 +21,7 @@
         <bottom>
             <HBox spacing="10" style="-fx-padding: 10;">
                 <Button text="Pay subscription" onAction="#createPayment" />
+                <Button text="Create new subscription" onAction="#createSubscription" />
             </HBox>
         </bottom>
     </BorderPane>

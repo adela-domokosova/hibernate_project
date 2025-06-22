@@ -119,4 +119,8 @@ public class Subscription {
                 ", active=" + active +
                 '}';
     }
+
+    public void setActiveTrue() {
+        this.active = true;
+    }
 }
